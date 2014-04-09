@@ -3,7 +3,7 @@
 DRUPAL_DIR=web
 
 apt-get update
-apt-get install -y php5 php5-gd php5-curl php5-sqlite php-pear unzip php5-mysql php5-pgsql apache2 libapache2-mod-php5
+apt-get install -y php5 php5-gd php5-curl php5-sqlite php-pear unzip php5-mysql php5-pgsql apache2 libapache2-mod-php5 curl
 
 pear channel-discover pear.drush.org
 pear install drush/drush
@@ -15,7 +15,7 @@ drush site-install -y standard --site-name='Drupal Zen' --account-name=admin --a
 drush en -y admin_menu_toolbar pathauto views_ui views_content page_manager panels
 drush en -y entityreference link date_popup
 drush en -y zen
-drush en -y devel_generate drupalforfirebug coder_review
+drush en -y devel_generate
 drush dis -y toolbar
 
 rm -rf /var/www
