@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-DRUPAL_DIR=.
+DRUPAL_DIR=web
 
 apt-get update
 apt-get install -y php5 php5-gd php5-curl php5-sqlite php-pear unzip php5-mysql php5-pgsql apache2 libapache2-mod-php5
