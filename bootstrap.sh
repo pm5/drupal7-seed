@@ -12,7 +12,7 @@ cd /vagrant
 drush make bootstrap.make $DRUPAL_DIR
 cd $DRUPAL_DIR
 drush site-install -y standard --site-name='Drupal Zen' --account-name=admin --account-pass=admin --db-url=sqlite://sites/default/files/.ht.sqlite
-drush en -y devel devel_generate devel_node_access coder coder_review admin_menu_toolbar pathauto zen views_ui panels panels_mini entityreference link date
+drush en -y devel devel_generate devel_node_access coder coder_review admin_menu_toolbar pathauto zen views_ui views_content  page_manager panels panels_mini entityreference link date_popup
 drush dis -y toolbar
 
 rm -rf /var/www
