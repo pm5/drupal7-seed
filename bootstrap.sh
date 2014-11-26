@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-DRUPAL_DIR=web
+DRUPAL_DIR=drupal7
 
 apt-get update
 apt-get install -y php5 php5-gd php5-curl php5-sqlite php-pear unzip php5-mysql php5-pgsql apache2 libapache2-mod-php5 curl
@@ -11,12 +11,7 @@ pear install drush/drush
 cd /vagrant
 drush make bootstrap.make $DRUPAL_DIR
 cd $DRUPAL_DIR
-drush site-install -y standard --site-name='Drupal Zen' --account-name=admin --account-pass=admin --db-url=sqlite://sites/default/files/.ht.sqlite
-drush en -y admin_menu_toolbar pathauto views_ui views_content page_manager panels
-drush en -y entityreference link date_popup
-drush en -y zen
-drush en -y devel_generate
-drush dis -y toolbar
+drush site-install -y standard --site-name='Drupal7 Sandbox' --account-name=admin --account-pass=admin --db-url=sqlite://sites/default/files/.ht.sqlite
 
 rm -rf /var/www
 ln -fs /vagrant/$DRUPAL_DIR /var/www
