@@ -1,22 +1,21 @@
 PWD=`pwd`
 
-.PHONY: build test run
+.PHONY: build test run start stop clean
 
 build:
-	docker build --rm=true -t pomin5/docker-php5-nginx .
+	docker build --rm=true -t pomin5/docker-drupal7 .
 
 test:
-	docker run -it --rm=true -p 8080:80 --name php5-nginx -v $(PWD):/app pomin5/docker-php5-nginx /bin/bash
+	docker run -it --rm=true -p 8080:80 --name drupal7 -v $(PWD):/app pomin5/docker-drupal7 /bin/bash
 
 run:
-	docker run -d -p 8080:80 --name=php5-nginx -v $(PWD):/app pomin5/docker-php5-nginx
+	docker run -d -p 8080:80 --name=drupal7 -v $(PWD):/app pomin5/docker-drupal7
 
 start:
-	docker start php5-nginx
+	docker start drupal7
 
 stop:
-	docker stop php5-nginx
+	docker stop drupal7
 
 clean:
-	docker rm -f php5-nginx || true
-	docker rmi pomin5/docker-php5-nginx || true
+	docker rm -f drupal7 || true
