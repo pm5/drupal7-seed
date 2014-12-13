@@ -6,8 +6,6 @@ DB_NAME=app
 DB_USER=root
 DB_PASS=foobar
 
-usermod -aG docker vagrant
-
 apt-get update && \
   apt-get upgrade -y
 
@@ -22,6 +20,9 @@ if [ -r "${APP_DIR}/database.sql.gz" ]; then
     mysqladmin -u $DB_USER -p$DB_PASS create $DB_NAME
     gunzip -c ${APP_DIR}/database.sql.gz | mysql -u $DB_USER -p$DB_PASS $DB_NAME
 fi
+echo "UPDATE user SET host = '%' WHERE user = 'root' AND host = 'localhost'; FLUSH PRIVILEGES;" | mysql -u root mysql -h127.0.0.1
+sed -i 's/^bind-address/#bind-address/' /etc/mysql/my.cnf
+/etc/init.d/mysql restart
 
 cat > /home/vagrant/.my.cnf <<END
 [client]
@@ -29,4 +30,5 @@ password=$DB_PASS
 END
 
 cd ${APP_DIR}
+usermod -aG docker vagrant
 make run-docker
