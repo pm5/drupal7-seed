@@ -31,4 +31,4 @@ END
 
 cd ${APP_DIR}
 usermod -aG docker vagrant
-make run-docker
+make dev
