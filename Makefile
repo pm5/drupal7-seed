@@ -1,10 +1,10 @@
 
-.PHONY: build run-docker clean
+.PHONY: build dev clean
 
 build:
 	docker build -t pomin5/drupal7 .
 
-run-docker:
+dev:
 	docker run -d --name=drupal7 -p 8080:80 -v $(PWD):/app pomin5/drupal7
 
 clean:

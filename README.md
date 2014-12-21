@@ -1,14 +1,12 @@
 
 A Docker image for Drupal development using PHP-FPM and nginx.
 
-This image is built for development, not deployment, so it does not contain the app directory `public`.  Changes to the content of `public` are reflected immediately in the container.
-
 Usages
 ------
 
         # Put your Drupal site under `public`
-        $ make build run
-        # check http://localhost:8080/
+        $ make dev
+        # check http://localhost:8080/ or http://<boot2docker_ip>:8080/
 
 Bugs
 ----
