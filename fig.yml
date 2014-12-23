@@ -1,0 +1,26 @@
+data:
+  image: pomin5/ssh
+  ports:
+    - "2222:22"
+  volumes:
+    - ./public:/var/www
+    - ./log/nginx:/var/log/nginx
+    - ./log/php5:/var/log/php5
+    - /var/lib/mysql
+www:
+  image: pomin5/php5-nginx
+  ports:
+    - "8080:80"
+  volumes_from:
+    - data
+  links:
+    - db
+db:
+  image: mysql
+  environment:
+    MYSQL_ROOT_PASSWORD:
+    MYSQL_USER:
+    MYSQL_PASSWORD:
+    MYSQL_DATABASE:
+  volumes_from:
+    - data

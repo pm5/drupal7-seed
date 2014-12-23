@@ -1,11 +1,16 @@
+MYSQL_ROOT_PASSWORD=foobar
+MYSQL_USER=drupal
+MYSQL_PASSWORD=foobar
+MYSQL_DATABASE=drupal
 
-.PHONY: build dev clean
-
-build:
-	docker build -t pomin5/drupal7 .
+.PHONY: dev clean
 
 dev:
-	docker run -d --name=drupal7 -p 8080:80 -v $(PWD):/app pomin5/drupal7
+	MYSQL_ROOT_PASSWORD=foobar \
+	MYSQL_USER=drupal \
+	MYSQL_PASSWORD=foobar \
+	MYSQL_DATABASE=drupal \
+	fig up
 
 clean:
-	docker rm -f drupal7 || true
+	fig rm --force
