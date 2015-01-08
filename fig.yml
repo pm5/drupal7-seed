@@ -3,9 +3,8 @@ data:
   ports:
     - "2222:22"
   volumes:
-    - ./public:/var/www
-    - ./log/nginx:/var/log/nginx
-    - ./log/php5:/var/log/php5
+    - .:/var/www
+    - .run/log:/var/log
     - /var/lib/mysql
 www:
   image: pomin5/php5-nginx
