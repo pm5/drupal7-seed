@@ -1,19 +1,15 @@
 
-A Docker image for Drupal development using PHP-FPM and nginx.
+A Docker + fig environment for Drupal development using PHP-FPM and nginx.
 
 Usages
 ------
 
-        # Put your Drupal site under `public`
+        # Put your Drupal site under project root directory
         $ make dev
         # check http://localhost:8080/ or http://<boot2docker_ip>:8080/
 
-Bugs
-----
+Check the `Makefile` for MySQL settings.  For MySQL host, after the containers start up, do
 
-If you use [boot2docker][] on OS X and install Drupal 7 with a SQLite database, the installer will complain "Drupal already installed".  This seems to be caused by some [OS X volume permission issue][].  For now changing file permission of the SQLite database file in the *host machine* can fix this:
+        $ fig run db env | grep DB_PORT_3306_TCP_ADDR
 
-        $ chmod a+w public/sites/default/files/.ht.sqlite
-
-[boot2docker]: https://github.com/boot2docker/boot2docker/
-[OS X volume permission issue]: https://github.com/boot2docker/boot2docker/issues/581
+You can connect to MySQL at `localhost:3306` or `<boot2docker_ip>:3306`.

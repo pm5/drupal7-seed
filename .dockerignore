@@ -1,0 +1,16 @@
+.git/
+.git*
+.vagrant/
+.docker*
+.run/
+
+*.pub
+
+Vagrantfile
+Dockerfile
+fig.yml
+Makefile
+
+bin/
+doc/
+backup/
