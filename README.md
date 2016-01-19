@@ -1,23 +1,24 @@
 
-A Vagrant + Ansible environment for Drupal development.
+Requirements
+------------
+
+* Vagrant
+* Ansible
 
 Usage
 -----
 
         # Put your Drupal site under `docroot` directory
-        # (Optional) put database dump at `database.mysql.gz`
-        # (Optional) put public files dump at `files.tar.gz`
+        # (Optional) put database dump at `data/database.mysql.gz`
+        # (Optional) put public files dump at `data/files.tar.gz`
+        $ scripts/ansible-install.sh
         $ vagrant up
-        # check http://localhost:8080/
 
-You can connect to MySQL at `localhost:3306`.
+You can connect to MySQL at `localhost:3306` with
 
-### Database configuration
-
-* DB Host: 192.168.10.3
 * DB Name: drupal
 * DB User: drupal
-* DB Password: foobar
+* DB Password: drupal
 
 ### Drush
 
