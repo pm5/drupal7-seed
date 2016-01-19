@@ -5,17 +5,21 @@
     - name: ensure apt cache is the latest
       apt: update_cache=yes upgrade=yes cache_valid_time=86400
 
-- hosts: web
+- hosts: webservers
   become: yes
   roles:
     - apache
 
-- hosts: db
+- hosts: dbservers
   become: yes
   roles:
     - postgresql
+
+- hosts: cacheservers
+  become: yes
+  roles:
     - memcache
 
-- hosts: web
+- hosts: webservers
   roles:
     - drupal7

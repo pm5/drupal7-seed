@@ -1,10 +1,8 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-VAGRANTFILE_API_VERSION = "2"
-
-Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "debian/jessie64"
+Vagrant.configure("2") do |config|
+  config.vm.box = "debian/wheezy64"
 
   # Vagrant 1.7+ automatically inserts a different
   # insecure keypair for each new VM created. The easiest way
@@ -27,10 +25,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     web.vm.network :forwarded_port, guest: 80, host: 8080, auto_correct: true
     web.vm.network :private_network, type: "dhcp"
     web.vm.synced_folder "docroot", "/var/www", :nfs => true
-    #web.vm.synced_folder "log", "/var/log/drupal7",
-      #owner: "vagrant",
-      #group: "www-data",
-      #mount_options: ["dmode=775,fmode=664"]
+    web.vm.synced_folder "log", "/var/log/drupal7",
+      owner: "vagrant",
+      group: "www-data",
+      mount_options: ["dmode=775,fmode=664"]
   end
 
   config.vm.define "db" do |db|
@@ -47,10 +45,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     db.vm.network :forwarded_port, guest: 11211, host: 11211, auto_correct: true
 
-    #db.vm.synced_folder "log", "/var/log/drupal7",
-      #owner: "vagrant",
-      #group: "www-data",
-      #mount_options: ["dmode=775,fmode=664"]
+    db.vm.synced_folder "log", "/var/log/drupal7",
+      owner: "vagrant",
+      group: "www-data",
+      mount_options: ["dmode=775,fmode=664"]
 
     db.vm.provision :ansible do |ansible|
       # provision in parallel
@@ -59,6 +57,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       ansible.groups = {
         "webservers" => ["web"],
         "dbservers" => ["db"],
+        "cacheservers" => ["db"],
         "all:children" => ["web", "db"]
       }
       ansible.host_key_checking = false
