@@ -4,7 +4,7 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "debian/wheezy64"
+  config.vm.box = "debian/jessie64"
 
   # Vagrant 1.7+ automatically inserts a different
   # insecure keypair for each new VM created. The easiest way
@@ -24,13 +24,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         "--memory", "1024"
       ]
     end
-    web.vm.network :forwarded_port, guest: 80, host: 8080
-    web.vm.network :private_network, ip: "192.168.10.2"    # for NFS
+    web.vm.network :forwarded_port, guest: 80, host: 8080, auto_correct: true
+    web.vm.network :private_network, type: "dhcp"
     web.vm.synced_folder "docroot", "/var/www", :nfs => true
-    web.vm.synced_folder "log", "/var/log/drupal7",
-      owner: "vagrant",
-      group: "www-data",
-      mount_options: ["dmode=775,fmode=664"]
+    #web.vm.synced_folder "log", "/var/log/drupal7",
+      #owner: "vagrant",
+      #group: "www-data",
+      #mount_options: ["dmode=775,fmode=664"]
   end
 
   config.vm.define "db" do |db|
@@ -41,19 +41,21 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         "--memory", "1024"
       ]
     end
-    db.vm.network :private_network, ip: "192.168.10.3"
-    db.vm.network :forwarded_port, guest: 3306, host: 3306
-    db.vm.network :forwarded_port, guest: 5432, host: 5432
-    db.vm.network :forwarded_port, guest: 11211, host: 11211
-    db.vm.synced_folder "log", "/var/log/drupal7",
-      owner: "vagrant",
-      group: "www-data",
-      mount_options: ["dmode=775,fmode=664"]
+    db.vm.network :private_network, type: "dhcp"
+    db.vm.network :forwarded_port, guest: 3306, host: 3306, auto_correct: true
+    db.vm.network :forwarded_port, guest: 5432, host: 5432, auto_correct: true
+
+    db.vm.network :forwarded_port, guest: 11211, host: 11211, auto_correct: true
+
+    #db.vm.synced_folder "log", "/var/log/drupal7",
+      #owner: "vagrant",
+      #group: "www-data",
+      #mount_options: ["dmode=775,fmode=664"]
 
     db.vm.provision :ansible do |ansible|
       # provision in parallel
       ansible.limit = "all"
-      ansible.playbook = "playbook.yml"
+      ansible.playbook = "provision/playbook.yml"
       ansible.groups = {
         "webservers" => ["web"],
         "dbservers" => ["db"],
