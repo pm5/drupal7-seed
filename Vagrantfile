@@ -25,7 +25,7 @@ Vagrant.configure("2") do |config|
     web.vm.network :forwarded_port, guest: 80, host: 8080, auto_correct: true
     web.vm.network :private_network, type: "dhcp"
     web.vm.synced_folder "docroot", "/var/www", :nfs => true
-    web.vm.synced_folder "log", "/var/log/drupal7",
+    web.vm.synced_folder "log/web", "/var/log",
       owner: "vagrant",
       group: "www-data",
       mount_options: ["dmode=775,fmode=664"]
@@ -45,7 +45,7 @@ Vagrant.configure("2") do |config|
 
     db.vm.network :forwarded_port, guest: 11211, host: 11211, auto_correct: true
 
-    db.vm.synced_folder "log", "/var/log/drupal7",
+    db.vm.synced_folder "log/db", "/var/log",
       owner: "vagrant",
       group: "www-data",
       mount_options: ["dmode=775,fmode=664"]
