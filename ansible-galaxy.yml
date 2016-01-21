@@ -1,6 +1,8 @@
 - src: geerlingguy.mysql
   version: 1.9.1
-  name: mysql
 - src: geerlingguy.memcached
   version: 1.0.4
-  name: memcached
+- src: geerlingguy.nginx
+  version: 1.5.0
+- src: geerlingguy.php
+  version: 1.8.1

@@ -1,12 +1,12 @@
 ---
 - hosts: all
-  become: yes
+  become: true
   tasks:
     - name: ensure apt cache is the latest
       apt: update_cache=yes upgrade=yes cache_valid_time=86400
 
 - hosts: dbservers
-  become: yes
+  become: true
   vars:
     mysql_databases:
       - name: drupal
@@ -16,14 +16,43 @@
         password: drupal
         priv: drupal.*:ALL
   roles:
-    - mysql
+    - geerlingguy.mysql
 
 - hosts: cacheservers
-  become: yes
+  become: true
   roles:
-    - memcached
+    - geerlingguy.memcached
 
 - hosts: webservers
+  become: true
+  vars:
+    nginx_vhosts:
+      - listen: "80 default_server"
+        server_name: "localhost"
+        root: "/var/www"
+        index: "index.php index.html index.htm"
+        extra_parameters: |
+          location ~ \.php$ {
+            fastcgi_split_path_info ^(.+\.php)(/.+)$;
+            fastcgi_pass unix:/var/run/php5-fpm.sock;
+            fastcgi_index index.php;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+          }
+    nginx_remove_default_vhost: true
+    php_packages:
+      - php-apc
+      - php-pear
+      - php5
+      - php5-cli
+      - php5-curl
+      - php5-fpm
+      - php5-gd
+      - php5-mcrypt
+      - php5-mysql
+      - php5-pgsql
+      - php5-sqlite
+    php_webserver_daemon: "nginx"
+    php_enable_php_fpm: true
   roles:
-    - apache
-    - drupal7
+    - geerlingguy.nginx
+    - geerlingguy.php

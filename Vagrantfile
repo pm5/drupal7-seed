@@ -2,7 +2,9 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "debian/wheezy64"
+  #config.vm.box = "debian/contrib-jessie64"
+  #config.vm.box = "debian/wheezy64"
+  config.vm.box = "ubuntu/trusty64"
 
   # Vagrant 1.7+ automatically inserts a different
   # insecure keypair for each new VM created. The easiest way
@@ -25,7 +27,7 @@ Vagrant.configure("2") do |config|
     web.vm.network :forwarded_port, guest: 80, host: 8080, auto_correct: true
     web.vm.network :private_network, type: "dhcp"
     web.vm.synced_folder "docroot", "/var/www", :nfs => true
-    web.vm.synced_folder "log/web", "/var/log",
+    web.vm.synced_folder "logs/web", "/var/log",
       owner: "vagrant",
       group: "www-data",
       mount_options: ["dmode=775,fmode=664"]
@@ -45,7 +47,7 @@ Vagrant.configure("2") do |config|
 
     db.vm.network :forwarded_port, guest: 11211, host: 11211, auto_correct: true
 
-    db.vm.synced_folder "log/db", "/var/log",
+    db.vm.synced_folder "logs/db", "/var/log",
       owner: "vagrant",
       group: "www-data",
       mount_options: ["dmode=775,fmode=664"]
