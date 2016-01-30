@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "debian/wheezy64"
+  config.vm.box = "debian/contrib-jessie64"
 
   # Vagrant 1.7+ automatically inserts a different
   # insecure keypair for each new VM created. The easiest way
