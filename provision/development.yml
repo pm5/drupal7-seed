@@ -103,5 +103,16 @@
     - geerlingguy.php
 - hosts: codeservers
   become: true
+  vars:
+    drupal_contrib_modules:
+      - bean
+      - admin_menu
+      - l10n_update
+      - views
+      - panels
+      - context
+      - title
+      - fences
+      - zen
   roles:
     - drupal
