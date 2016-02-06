@@ -9,3 +9,6 @@ start:
 
 provision:
 	vagrant provision
+
+update:
+	cd docroot && drush make -y ../drupal.make.yml

@@ -81,3 +81,7 @@
   roles:
     - geerlingguy.nginx
     - geerlingguy.php
+- hosts: codeservers
+  become: true
+  roles:
+    - drupal

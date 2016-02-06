@@ -58,6 +58,8 @@ Vagrant.configure("2") do |config|
       ansible.playbook = "provision/development.yml"
       ansible.groups = {
         "webservers" => ["web"],
+        "codeservers" => ["web"],
+        "fileservers" => ["web"],
         "dbservers" => ["db"],
         "cacheservers" => ["db"],
         "all:children" => ["web", "db"]
