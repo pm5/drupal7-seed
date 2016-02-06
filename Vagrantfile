@@ -55,7 +55,7 @@ Vagrant.configure("2") do |config|
     db.vm.provision :ansible do |ansible|
       # provision in parallel
       ansible.limit = "all"
-      ansible.playbook = "provision/playbook.yml"
+      ansible.playbook = "provision/development.yml"
       ansible.groups = {
         "webservers" => ["web"],
         "dbservers" => ["db"],
