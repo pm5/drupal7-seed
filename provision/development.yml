@@ -32,6 +32,26 @@
         root: "/var/www"
         index: "index.php index.html index.htm"
         extra_parameters: |
+          location / {
+              index  index.php index.html;
+
+              if (!-f $request_filename) {
+                  rewrite  ^(.*)$  /index.php?q=$1  last;
+                  break;
+              }
+
+              if (!-d $request_filename) {
+                  rewrite  ^(.*)$  /index.php?q=$1  last;
+                  break;
+              }
+          }
+
+          # serve static files directly
+          location ~* ^.+.(jpg|jpeg|gif|css|png|js|ico)$ {
+              access_log        off;
+              expires           30d;
+          }
+
           # if the request starts with our frontcontroller, pass it on to fastcgi
           location ~ ^/.*\.php
           {
