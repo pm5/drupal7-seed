@@ -20,6 +20,8 @@
 
 - hosts: cacheservers
   become: true
+  vars:
+    memcached_listen_ip: 0.0.0.0
   roles:
     - geerlingguy.memcached
 
