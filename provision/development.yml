@@ -104,15 +104,8 @@
 - hosts: codeservers
   become: true
   vars:
-    drupal_contrib_modules:
-      - bean
-      - admin_menu
-      - l10n_update
-      - views
-      - panels
-      - context
-      - title
-      - fences
-      - zen
+    drupal_core_version: "7.x"
+    drupal_root_dir: "/vagrant"
+    drupal_docroot_dir: "/vagrant/docroot"
   roles:
     - drupal
