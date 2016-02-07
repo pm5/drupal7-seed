@@ -5,10 +5,7 @@ install:
 	scripts/ansible-install.sh
 
 dev:
-	vagrant up
-
-provision:
-	vagrant provision
+	vagrant up --provision
 
 update:
 	cd docroot && drush make -y ../drupal.make.yml
