@@ -4,7 +4,7 @@
 install:
 	scripts/ansible-install.sh
 
-start:
+dev:
 	vagrant up
 
 provision:
@@ -12,3 +12,6 @@ provision:
 
 update:
 	cd docroot && drush make -y ../drupal.make.yml
+
+ssh-config:
+	vagrant ssh-config > ssh_config
