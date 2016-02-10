@@ -161,5 +161,5 @@
     glusterfs_mount_owner: www-data
     glusterfs_mount_group: www-data
   roles:
-    - pm5.drupal
     - pm5.glusterfs
+    - pm5.drupal
