@@ -143,4 +143,5 @@
         '172.28.128.4:11211' => 'default',
       );
   roles:
-    - ansible-role-drupal
+    - pm5.drupal
+    - pm5.glusterfs
