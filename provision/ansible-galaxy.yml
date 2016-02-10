@@ -3,6 +3,6 @@
 - src: geerlingguy.memcached
   version: 1.0.4
 - src: geerlingguy.nginx
-  version: 1.5.0
+  version: 1.5.1
 - src: geerlingguy.php
-  version: 1.8.1
+  version: 1.8.2
