@@ -24,7 +24,7 @@ Vagrant.configure("2") do |config|
         "--memory", "1024"
       ]
     end
-    web.vm.network :forwarded_port, guest: 80, host: 8080, auto_correct: true
+    web.vm.network :forwarded_port, guest: 8080, host: 8080, auto_correct: true
     web.vm.network :private_network, type: "dhcp"
     web.vm.synced_folder "docroot", "/var/www", :nfs => true
     web.vm.synced_folder "logs/web", "/var/log",

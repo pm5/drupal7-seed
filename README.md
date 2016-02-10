@@ -52,3 +52,7 @@ Typical `settings.php` goes like this:
           '192.168.10.3:11211' => 'default',  // to your Memcached installation
         );
 
+Troubleshooting
+---------------
+
+If you run on Vagrant and get the "HTTP failed" warning from Drupal, you could try setting `$base_url` in `settings.php`.

@@ -44,7 +44,8 @@
   become: yes
   vars:
     nginx_vhosts:
-      - server_name: "localhost"
+      - listen: "8080 default_server"
+        server_name: "localhost"
         root: "/var/www"
         index: "index.php index.html index.htm"
         extra_parameters: |
