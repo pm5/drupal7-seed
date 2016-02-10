@@ -158,8 +158,8 @@
     glusterfs_mount_points:
       - name: /var/www/sites/default/files
         src: db:drupal_files
-    glusterfs_mount_owner: 501
-    glusterfs_mount_group: 20
+    glusterfs_mount_owner: www-data
+    glusterfs_mount_group: www-data
   roles:
     - pm5.drupal
     - pm5.glusterfs
