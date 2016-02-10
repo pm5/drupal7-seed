@@ -23,8 +23,13 @@
         host: "%"
         password: drupal
         priv: drupal.*:ALL
+    glusterfs_bricks:
+      - /data/glusterfs/drupal_files/brick0/brick
+    glusterfs_volume_name: drupal_files
+    glusterfs_force: yes
   roles:
     - geerlingguy.mysql
+    - pm5.glusterfs
 
 - hosts: cacheservers
   become: true
@@ -150,6 +155,11 @@
       $conf['memcache_servers'] = array(
         '172.28.128.4:11211' => 'default',
       );
+    glusterfs_mount_points:
+      - name: /var/www/sites/default/files
+        src: db:drupal_files
+    glusterfs_mount_owner: 501
+    glusterfs_mount_group: 20
   roles:
     - pm5.drupal
     - pm5.glusterfs
