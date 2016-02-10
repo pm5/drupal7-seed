@@ -12,6 +12,8 @@
       with_items: '{{groups["all"]}}'
     - name: Update hostname
       hostname: name={{ inventory_hostname }}
+    - name: Generate some locales.
+      locale_gen: name=zh_TW.UTF-8
 
 - hosts: dbservers
   become: yes
