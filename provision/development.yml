@@ -130,6 +130,11 @@
     drupal_root_dir: "/vagrant"
     drupal_docroot_dir: "/vagrant/docroot"
     drupal_mysql_host: "172.28.128.4"
+    drupal_mysql_database: "drupal"
+    drupal_mysql_user: "drupal"
+    drupal_mysql_password: "drupal"
+    drupal_mysql_password: "drupal"
+    drupal_mysql_port: ""
     drupal_extra_settings: |
       $conf['cache_backends'][] = 'sites/all/modules/contrib/memcache/memcache.inc';
       $conf['cache_default_class'] = 'MemCacheDrupal';
@@ -139,5 +144,4 @@
         '172.28.128.4:11211' => 'default',
       );
   roles:
-    - pm5.glusterfs
-    - pm5.drupal
+    - ansible-role-drupal
