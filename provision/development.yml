@@ -133,7 +133,6 @@
     drupal_mysql_database: "drupal"
     drupal_mysql_user: "drupal"
     drupal_mysql_password: "drupal"
-    drupal_mysql_password: "drupal"
     drupal_mysql_port: ""
     drupal_extra_settings: |
       $conf['cache_backends'][] = 'sites/all/modules/contrib/memcache/memcache.inc';
