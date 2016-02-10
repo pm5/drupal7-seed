@@ -139,4 +139,5 @@
         '172.28.128.4:11211' => 'default',
       );
   roles:
-    - drupal
+    - pm5.glusterfs
+    - pm5.drupal
