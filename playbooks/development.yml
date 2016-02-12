@@ -24,7 +24,7 @@
     glusterfs_client: "yes"
     glusterfs_mount_points:
       - name: /var/www/sites/default/files
-        src: db:{{ glusterfs_volume_name }}
+        src: {{ glusterfs_volume_host }}:{{ glusterfs_volume_name }}
     glusterfs_mount_owner: www-data
     glusterfs_mount_group: www-data
   roles:

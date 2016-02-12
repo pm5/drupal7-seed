@@ -1,0 +1,34 @@
+# Build the web site on DigitalOcean
+---
+- include: secret.yml
+
+- hosts: all
+  become: yes
+  tasks:
+    - name: ensure apt cache is the latest
+      apt: update_cache=yes upgrade=yes cache_valid_time=86400
+
+- include: production.yml
+  vars:
+    drupal_site_machinename: mydrupalsite
+    mysql_databases:
+      - name: mydrupalsite
+    mysql_users:
+      - name: mydrupalsite
+        host: "%"
+        password: "{{ secret_password }}"
+        priv: mydrupalsite.*:ALL
+    glusterfs_volume_host: cecil
+    glusterfs_volume_name: mydrupalsite
+    glusterfs_force: yes
+
+- include: deploy.yml
+  vars:
+    drupal_init: yes
+    drupal_root_dir: "/app"
+    drupal_docroot_dir: "/var/www/mydrupalsite"
+    drupal_mysql_host: "cecil"
+    drupal_mysql_database: "mydrupalsite"
+    drupal_mysql_user: "mydrupalsite"
+    drupal_mysql_password: "{{ secret_password }}"
+    drupal_mysql_port: ""

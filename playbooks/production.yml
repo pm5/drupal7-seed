@@ -12,7 +12,6 @@
   vars:
     glusterfs_bricks:
       - /data/glusterfs/{{ glusterfs_volume_name }}/brick0/brick
-    glusterfs_force: no
   roles:
     - pm5.glusterfs
 
@@ -24,7 +23,7 @@
     glusterfs_client: "yes"
     glusterfs_mount_points:
       - name: /var/www/{{ drupal_site_machinename }}/sites/default/files
-        src: db:{{ glusterfs_volume_name }}
+        src: "{{ glusterfs_volume_host }}:{{ glusterfs_volume_name }}"
     glusterfs_mount_owner: www-data
     glusterfs_mount_group: www-data
   roles:
@@ -43,7 +42,7 @@
   become: yes
   vars:
     nginx_vhosts:
-      - listen: "8080 default_server"
+      - listen: "80 default_server"
         server_name: "localhost"
         root: "/var/www/{{ drupal_site_machinename }}"
         index: "index.php index.html index.htm"

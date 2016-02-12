@@ -21,7 +21,9 @@
         host: "%"
         password: drupal
         priv: drupal.*:ALL
+    glusterfs_volume_host: db
     glusterfs_volume_name: drupal_files
+    glusterfs_force: yes
 
 - include: deploy.yml
   vars:
