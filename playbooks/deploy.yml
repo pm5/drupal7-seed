@@ -10,7 +10,7 @@
       $conf['cache_class_cache_form'] = 'DrupalDatabaseCache';
 
       $conf['memcache_servers'] = array(
-        'db:11211' => 'default',
+        '{{ memcached_host }}:{{ memcached_port | default("11211") }}' => 'default',
       );
   roles:
     - pm5.drupal
