@@ -11,7 +11,7 @@
   become: yes
   vars:
     glusterfs_bricks:
-      - /data/glusterfs/drupal_files/brick0/brick
+      - /data/glusterfs/{{ glusterfs_volume_name }}/brick0/brick
     glusterfs_force: yes
   roles:
     - pm5.glusterfs
@@ -20,6 +20,8 @@
   hosts: codeservers
   become: yes
   vars:
+    glusterfs_server: "no"
+    glusterfs_client: "yes"
     glusterfs_mount_points:
       - name: /var/www/sites/default/files
         src: db:{{ glusterfs_volume_name }}
