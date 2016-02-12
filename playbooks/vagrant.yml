@@ -1,0 +1,34 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: ensure apt cache is the latest
+      apt: update_cache=yes upgrade=yes cache_valid_time=86400
+    - name: Update /etc/hosts
+      lineinfile:
+        dest=/etc/hosts regexp='.*\s+{{item}}[\s$]'
+        line='{{hostvars[item].ansible_eth1.ipv4.address}} {{item}}'
+      when: hostvars[item].ansible_eth1.ipv4.address is defined
+      with_items: '{{groups["all"]}}'
+
+- include: development.yml
+  vars:
+    mysql_databases:
+      - name: drupal
+    mysql_users:
+      - name: drupal
+        host: "%"
+        password: drupal
+        priv: drupal.*:ALL
+    glusterfs_volume_name: drupal_files
+
+- include: deploy.yml
+  vars:
+    drupal_init: yes
+    drupal_root_dir: "/vagrant"
+    drupal_docroot_dir: "/vagrant/docroot"
+    drupal_mysql_host: "db"
+    drupal_mysql_database: "drupal"
+    drupal_mysql_user: "drupal"
+    drupal_mysql_password: "drupal"
+    drupal_mysql_port: ""

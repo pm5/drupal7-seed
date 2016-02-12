@@ -1,42 +1,43 @@
+# Provision development environment
 ---
-- hosts: all
+- name: Ensure MySQL dbservers are ready.
+  hosts: dbservers
   become: yes
-  tasks:
-    - name: ensure apt cache is the latest
-      apt: update_cache=yes upgrade=yes cache_valid_time=86400
-    - name: Update /etc/hosts
-      lineinfile:
-        dest=/etc/hosts regexp='.*\s+{{item}}[\s$]'
-        line='{{hostvars[item].ansible_eth1.ipv4.address}} {{item}}'
-      when: hostvars[item].ansible_eth1.ipv4.address is defined
-      with_items: '{{groups["all"]}}'
-
-- hosts: dbservers
-  become: yes
-  vars:
-    mysql_databases:
-      - name: drupal
-    mysql_users:
-      - name: drupal
-        host: "%"
-        password: drupal
-        priv: drupal.*:ALL
-    glusterfs_bricks:
-      - /data/glusterfs/drupal_files/brick0/brick
-    glusterfs_volume_name: drupal_files
-    glusterfs_force: yes
   roles:
     - geerlingguy.mysql
+
+- name: Ensure GlusterFS fileservers are ready.
+  hosts: fileservers
+  become: yes
+  vars:
+    glusterfs_bricks:
+      - /data/glusterfs/drupal_files/brick0/brick
+    glusterfs_force: yes
+  roles:
     - pm5.glusterfs
 
-- hosts: cacheservers
+- name: Ensure GlusterFS service is connected.
+  hosts: codeservers
+  become: yes
+  vars:
+    glusterfs_mount_points:
+      - name: /var/www/sites/default/files
+        src: db:{{ glusterfs_volume_name }}
+    glusterfs_mount_owner: www-data
+    glusterfs_mount_group: www-data
+  roles:
+    - pm5.glusterfs
+
+- name: Ensure Memcached cacheservers are ready.
+  hosts: cacheservers
   become: yes
   vars:
     memcached_listen_ip: 0.0.0.0
   roles:
     - geerlingguy.memcached
 
-- hosts: webservers
+- name: Ensure Nginx webservers are ready.
+  hosts: webservers
   become: yes
   vars:
     nginx_vhosts:
@@ -45,6 +46,7 @@
         root: "/var/www"
         index: "index.php index.html index.htm"
         extra_parameters: |
+          # XXX lot of optimizations; should extract an assetservers role but Drupal 7.x don't really support this.
           # <https://www.nginx.com/resources/wiki/start/topics/recipes/drupal/>
           location = /favicon.ico {
               log_not_found off;
@@ -115,50 +117,9 @@
           }
 
     nginx_remove_default_vhost: true
-    php_packages:
-      - php-apc
-      - php-pear
-      - php5
-      - php5-cli
-      - php5-curl
-      - php5-fpm
-      - php5-gd
-      - php5-mcrypt
-      - php5-mysql
-      - php5-pgsql
-      - php5-sqlite
-      - php5-memcache
     php_webserver_daemon: "nginx"
     php_enable_php_fpm: true
     php_fpm_listen: "/var/run/php5-fpm.sock"
   roles:
     - geerlingguy.nginx
     - geerlingguy.php
-
-- hosts: codeservers
-  become: yes
-  vars:
-    drupal_core_version: "7.x"
-    drupal_root_dir: "/vagrant"
-    drupal_docroot_dir: "/vagrant/docroot"
-    drupal_mysql_host: "172.28.128.4"
-    drupal_mysql_database: "drupal"
-    drupal_mysql_user: "drupal"
-    drupal_mysql_password: "drupal"
-    drupal_mysql_port: ""
-    drupal_extra_settings: |
-      $conf['cache_backends'][] = 'sites/all/modules/contrib/memcache/memcache.inc';
-      $conf['cache_default_class'] = 'MemCacheDrupal';
-      $conf['cache_class_cache_form'] = 'DrupalDatabaseCache';
-
-      $conf['memcache_servers'] = array(
-        '172.28.128.4:11211' => 'default',
-      );
-    glusterfs_mount_points:
-      - name: /var/www/sites/default/files
-        src: db:drupal_files
-    glusterfs_mount_owner: www-data
-    glusterfs_mount_group: www-data
-  roles:
-    - pm5.glusterfs
-    - pm5.drupal

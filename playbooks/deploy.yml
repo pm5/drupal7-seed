@@ -1,0 +1,16 @@
+---
+- name: Ensure codeservers are ready.
+  hosts: codeservers
+  become: yes
+  vars:
+    drupal_core_version: "7.x"
+    drupal_extra_settings: |
+      $conf['cache_backends'][] = 'sites/all/modules/contrib/memcache/memcache.inc';
+      $conf['cache_default_class'] = 'MemCacheDrupal';
+      $conf['cache_class_cache_form'] = 'DrupalDatabaseCache';
+
+      $conf['memcache_servers'] = array(
+        'db:11211' => 'default',
+      );
+  roles:
+    - pm5.drupal

@@ -1,0 +1,4 @@
+---
+- name: Define environment.
+  set_fact:
+    drupal_environment: "production"
