@@ -11,6 +11,8 @@
 - include: production.yml
   vars:
     drupal_site_machinename: mydrupalsite
+    drupal_root_dir: /srv/mydrupalsite
+    drupal_docroot_dir: /srv/mydrupalsite/docroot
     mysql_databases:
       - name: mydrupalsite
     mysql_users:

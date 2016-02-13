@@ -22,7 +22,7 @@
     glusterfs_server: "no"
     glusterfs_client: "yes"
     glusterfs_mount_points:
-      - name: /var/www/{{ drupal_site_machinename }}/sites/default/files
+      - name: '{{ drupal_docroot_dir }}/sites/default/files'
         src: "{{ glusterfs_volume_host }}:{{ glusterfs_volume_name }}"
     glusterfs_mount_owner: www-data
     glusterfs_mount_group: www-data
@@ -44,7 +44,7 @@
     nginx_vhosts:
       - listen: "80 default_server"
         server_name: "localhost"
-        root: "/var/www/{{ drupal_site_machinename }}"
+        root: "{{ drupal_docroot_dir }}"
         index: "index.php index.html index.htm"
         extra_parameters: |
           # XXX lot of optimizations; should extract an assetservers role but Drupal 7.x don't really support this.
