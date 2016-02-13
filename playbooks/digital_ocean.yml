@@ -1,11 +1,11 @@
-# Build the web site on DigitalOcean
+# Build the production web site on DigitalOcean
 ---
 - include: secret.yml
 
 - hosts: all
   become: yes
   tasks:
-    - name: ensure apt cache is the latest
+    - name: Ensure apt cache is the latest
       apt: update_cache=yes upgrade=yes cache_valid_time=86400
 
 - include: production.yml

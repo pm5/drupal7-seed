@@ -1,9 +1,9 @@
-# Build the web site on Vagrant
+# Build the development web site on Vagrant
 ---
 - hosts: all
   become: yes
   tasks:
-    - name: ensure apt cache is the latest
+    - name: Ensure apt cache is the latest
       apt: update_cache=yes upgrade=yes cache_valid_time=86400
     - name: Update /etc/hosts
       lineinfile:
