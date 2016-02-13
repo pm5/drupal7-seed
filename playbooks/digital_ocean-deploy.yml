@@ -1,0 +1,14 @@
+# Deploy the production web site on DigitalOcean
+---
+- include: secret.yml
+
+- include: deploy.yml
+  vars:
+    drupal_root_dir: /srv/mydrupalsite
+    drupal_docroot_dir: /srv/mydrupalsite/docroot
+    drupal_mysql_host: cecil
+    drupal_mysql_database: mydrupalsite
+    drupal_mysql_user: mydrupalsite
+    drupal_mysql_password: '{{ secret_mysql_password }}'
+    drupal_mysql_port: ''
+    drupal_git_repository: /srv/git/mydrupalsite.git

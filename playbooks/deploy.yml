@@ -1,16 +1,28 @@
 ---
+- name: Ensure Drupal code is update.
+  hosts: codeservers
+  become: yes
+  ignore_errors: yes
+  tasks:
+    - name: Checkout code from Git repository.
+      git: dest={{ drupal_root_dir }} repo={{ drupal_git_repository }} version=master
+      when: drupal_git_repository is defined
+
 - name: Ensure codeservers are ready.
   hosts: codeservers
   become: yes
-  vars:
-    drupal_core_version: "7.x"
-    drupal_extra_settings: |
-      $conf['cache_backends'][] = 'sites/all/modules/contrib/memcache/memcache.inc';
-      $conf['cache_default_class'] = 'MemCacheDrupal';
-      $conf['cache_class_cache_form'] = 'DrupalDatabaseCache';
-
-      $conf['memcache_servers'] = array(
-        '{{ memcached_host }}:{{ memcached_port | default("11211") }}' => 'default',
-      );
   roles:
     - pm5.drupal
+
+- name: Ensure Drupal updates are applied.
+  hosts: codeservers
+  ignore_errors: yes
+  tasks:
+    - name: Run Drush database update
+      shell: drush updb -y
+      args:
+        chdir: '{{ drupal_docroot_dir }}'
+    - name: Run Drush registry rebuild.
+      shell: drush registry-rebuild -y
+      args:
+        chdir: '{{ drupal_docroot_dir }}'
