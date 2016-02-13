@@ -1,28 +1,17 @@
 # Build the production web site on DigitalOcean
 ---
-- include: secret.yml
-
 - hosts: all
   become: yes
   tasks:
     - name: Ensure apt cache is the latest
       apt: update_cache=yes upgrade=yes cache_valid_time=86400
 
-- include: production.yml
-  vars:
-    drupal_site_machinename: mydrupalsite
-    drupal_root_dir: /srv/mydrupalsite
-    drupal_docroot_dir: /srv/mydrupalsite/docroot
-    mysql_databases:
-      - name: mydrupalsite
-    mysql_users:
-      - name: mydrupalsite
-        host: "%"
-        password: "{{ secret_mysql_password }}"
-        priv: mydrupalsite.*:ALL
-    glusterfs_volume_host: cecil
-    glusterfs_volume_name: mydrupalsite
-    memcached_host: cecil
-    glusterfs_force: yes
+- include: secret.yml
 
-- include: digital_ocean-deploy.yml
+- include: vars/digital_ocean.yml
+
+- include: deploy.yml
+
+- include: production.yml
+
+- include: update.yml

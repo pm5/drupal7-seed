@@ -125,3 +125,9 @@
   roles:
     - geerlingguy.nginx
     - geerlingguy.php
+
+- name: Ensure Drupal codeservers are ready.
+  hosts: codeservers
+  become: yes
+  roles:
+    - pm5.drupal

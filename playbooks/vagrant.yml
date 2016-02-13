@@ -12,34 +12,11 @@
       when: hostvars[item].ansible_eth1.ipv4.address is defined
       with_items: '{{groups["all"]}}'
 
-- include: development.yml
-  vars:
-    mysql_databases:
-      - name: drupal
-    mysql_users:
-      - name: drupal
-        host: "%"
-        password: drupal
-        priv: drupal.*:ALL
-    glusterfs_volume_host: db
-    glusterfs_volume_name: drupal_files
-    glusterfs_force: yes
+- include: vars/vagrant.yml
 
-- include: deploy.yml
-  vars:
-    drupal_init: yes
-    drupal_core_version: "7.x"
-    drupal_root_dir: "/vagrant"
-    drupal_docroot_dir: "/vagrant/docroot"
-    drupal_mysql_host: "db"
-    drupal_mysql_database: "drupal"
-    drupal_mysql_user: "drupal"
-    drupal_mysql_password: "drupal"
-    drupal_mysql_port: ""
-    drupal_extra_settings: |
-      $conf['cache_backends'][] = 'sites/all/modules/contrib/memcache/memcache.inc';
-      $conf['cache_default_class'] = 'MemCacheDrupal';
-      $conf['cache_class_cache_form'] = 'DrupalDatabaseCache';
-      $conf['memcache_servers'] = array(
-        '{{ memcached_host }}:{{ memcached_port | default("11211") }}' => 'default',
-      );
+# Vagrant runs code from synced_folder
+#- include: deploy.yml
+
+- include: development.yml
+
+- include: update.yml

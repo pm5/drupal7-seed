@@ -15,7 +15,7 @@
   roles:
     - pm5.glusterfs
 
-- name: Ensure GlusterFS service is connected.
+- name: Ensure GlusterFS service is mounted.
   hosts: codeservers
   become: yes
   vars:
@@ -124,3 +124,9 @@
   roles:
     - geerlingguy.nginx
     - geerlingguy.php
+
+- name: Ensure Drupal codeservers are ready.
+  hosts: codeservers
+  become: yes
+  roles:
+    - pm5.drupal
