@@ -26,3 +26,7 @@
       shell: drush registry-rebuild -y
       args:
         chdir: '{{ drupal_docroot_dir }}'
+    - name: Run Drush feature revert.
+      shell: drush features-revert -y
+      args:
+        chdir: '{{ drupal_docroot_dir }}'
