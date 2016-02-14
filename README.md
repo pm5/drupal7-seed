@@ -1,23 +1,24 @@
 
-A Vagrant + Ansible environment for Drupal development.
+Requirements
+------------
+
+* Vagrant
+* Ansible
 
 Usage
 -----
 
         # Put your Drupal site under `docroot` directory
-        # (Optional) put database dump at `database.mysql.gz`
-        # (Optional) put public files dump at `files.tar.gz`
+        # (Optional) put database dump at `data/database.mysql.gz`
+        # (Optional) put public files dump at `data/files.tar.gz`
+        $ scripts/ansible-install.sh
         $ vagrant up
-        # check http://localhost:8080/
 
-You can connect to MySQL at `localhost:3306`.
+You can connect to MySQL at `localhost:3306` with
 
-### Database configuration
-
-* DB Host: 192.168.10.3
 * DB Name: drupal
 * DB User: drupal
-* DB Password: foobar
+* DB Password: drupal
 
 ### Drush
 
@@ -51,3 +52,31 @@ Typical `settings.php` goes like this:
           '192.168.10.3:11211' => 'default',  // to your Memcached installation
         );
 
+Drupal environments
+-------------------
+
+This setup defines several running environments of Drupal:
+
+* **Development** dev
+* **Test** stage
+* **Production** prod
+
+settings.vagrant
+settings.do
+settings.ci
+
+Roles
+-----
+
+A role is a set of nodes providing a feature.  Each role handles its own replication.  The following roles are used throught out every environment.  In some environment a node may play several roles.
+
+* **Codeservers** contain the PHP code for Drupal web site.  This is almost always the only component that gets updated when you roll out a new version.
+* **Webservers** serve the web site supplied by codeservers at some port throught HTTP.  They run the web site with Apache, Nginx + PHP-FPM, or any viable combination.
+* **Fileservers** provide a network file system service at some endpoint.
+* **Dbservers** provide an SQL database service at some endpoint.
+* **Cacheservers** provide a key-value caching service at some endpoint.
+
+Troubleshooting
+---------------
+
+If you run on Vagrant and get the "HTTP failed" warning from Drupal, you could try setting `$base_url` in `settings.php`.

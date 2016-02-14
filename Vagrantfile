@@ -2,7 +2,10 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "debian/contrib-jessie64"
+  #config.vm.box = "debian/contrib-jessie64"
+  #config.vm.box = "debian/wheezy64"
+  config.vm.box = "ubuntu/trusty64"
+  config.vm.network :private_network, type: "dhcp"
 
   # Vagrant 1.7+ automatically inserts a different
   # insecure keypair for each new VM created. The easiest way
@@ -22,10 +25,10 @@ Vagrant.configure("2") do |config|
         "--memory", "1024"
       ]
     end
-    web.vm.network :forwarded_port, guest: 80, host: 8080, auto_correct: true
-    web.vm.network :private_network, type: "dhcp"
+    web.vm.hostname = "web"
+    web.vm.network :forwarded_port, guest: 8080, host: 8080, auto_correct: true
     web.vm.synced_folder "docroot", "/var/www", :nfs => true
-    web.vm.synced_folder "log", "/var/log/drupal7",
+    web.vm.synced_folder "logs/web", "/var/log",
       owner: "vagrant",
       group: "www-data",
       mount_options: ["dmode=775,fmode=664"]
@@ -39,13 +42,12 @@ Vagrant.configure("2") do |config|
         "--memory", "1024"
       ]
     end
-    db.vm.network :private_network, type: "dhcp"
+    db.vm.hostname = "db"
     db.vm.network :forwarded_port, guest: 3306, host: 3306, auto_correct: true
     db.vm.network :forwarded_port, guest: 5432, host: 5432, auto_correct: true
-
     db.vm.network :forwarded_port, guest: 11211, host: 11211, auto_correct: true
 
-    db.vm.synced_folder "log", "/var/log/drupal7",
+    db.vm.synced_folder "logs/db", "/var/log",
       owner: "vagrant",
       group: "www-data",
       mount_options: ["dmode=775,fmode=664"]
@@ -53,9 +55,11 @@ Vagrant.configure("2") do |config|
     db.vm.provision :ansible do |ansible|
       # provision in parallel
       ansible.limit = "all"
-      ansible.playbook = "provision/playbook.yml"
+      ansible.playbook = "playbooks/vagrant.yml"
       ansible.groups = {
         "webservers" => ["web"],
+        "codeservers" => ["web"],
+        "fileservers" => ["db"],
         "dbservers" => ["db"],
         "cacheservers" => ["db"],
         "all:children" => ["web", "db"]

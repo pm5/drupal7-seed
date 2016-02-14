@@ -1,0 +1,9 @@
+# Deploy the production web site on DigitalOcean
+---
+- include: secret.yml
+
+- include: vars/digital_ocean.yml
+
+- include: deploy.yml
+
+- include: update.yml

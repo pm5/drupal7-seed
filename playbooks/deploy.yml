@@ -1,0 +1,10 @@
+# Deploy Drupal code
+---
+- name: Ensure Drupal code is update-to-date.
+  hosts: codeservers
+  become: yes
+  ignore_errors: yes
+  tasks:
+    - name: Checkout code from Git repository.
+      git: dest={{ drupal_root_dir }} repo={{ drupal_git_repository }} version=master force=yes
+      when: drupal_git_repository is defined

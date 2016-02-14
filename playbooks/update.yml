@@ -1,0 +1,15 @@
+# Start Drupal with updates
+---
+- name: Update and start Drupal.
+  hosts: codeservers
+  ignore_errors: yes
+  tasks:
+    - name: Run Drush update commands
+      shell: '{{ item }}'
+      args:
+        chdir: '{{ drupal_docroot_dir }}'
+      with_items:
+        - 'drush updb -y'
+        - 'drush registry-rebuild -y'
+        - 'drush cc all'
+        - 'drush fra -y'

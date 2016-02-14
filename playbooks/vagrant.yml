@@ -1,0 +1,22 @@
+# Build the development web site on Vagrant
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Ensure apt cache is the latest
+      apt: update_cache=yes upgrade=yes cache_valid_time=86400
+    - name: Update /etc/hosts
+      lineinfile:
+        dest=/etc/hosts regexp='.*\s+{{item}}[\s$]'
+        line='{{hostvars[item].ansible_eth1.ipv4.address}} {{item}}'
+      when: hostvars[item].ansible_eth1.ipv4.address is defined
+      with_items: '{{groups["all"]}}'
+
+- include: vars/vagrant.yml
+
+# Vagrant runs code from synced_folder
+#- include: deploy.yml
+
+- include: development.yml
+
+- include: update.yml
